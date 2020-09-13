@@ -1,0 +1,23 @@
+---
+- hosts: l3-lab2
+  user: vagrant
+  become: yes
+  tasks:
+    
+    - name: Disable Network Manager
+      service:
+        name: NetworkManager
+        state: stopped
+        enabled: false
+
+    - name: Modigy Grub 
+      lineinfile:
+        path: /etc/default/grub
+        regexp: '^GRUB_CMDLINE_LINUX='
+        line: GRUB_CMDLINE_LINUX="no_timer_check console=tty0 console=ttyS0,115200n8 elevator=noop crashkernel=auto" 
+
+
+    - name: grub2-mkconfig
+      command: grub2-mkconfig -o /boot/grub2/grub.cfg
+
+        

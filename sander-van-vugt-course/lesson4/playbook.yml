@@ -1,0 +1,60 @@
+---
+- hosts: all
+  vars:
+    firewall: firewalld
+
+
+  tasks:
+    - name: install the firewall
+      yum:
+        name: "{{firewall}}"
+        state: latest
+
+
+    - name: start the firewall
+      service:
+        name: "{{firewall}}"
+        state: started
+        enabled: true
+
+
+- hosts: lamp
+  tasks:
+    - name: include the virable file
+      include_vars: vars/allvars.yml
+
+    - name: include the tasks
+      include: tasks/lamp.yml
+
+    - name: Opon the port to web server
+      firewalld:
+        service: http
+        state: enabled
+        immediate: true
+        permanent: true
+
+    - name: create index.html
+      copy:
+        content: "{{ansible_fqdn}}({{ansible_default_ipv4.address}}) managed by Ansible"
+        dest: "{{web_root}}/index.html"
+
+
+- hosts: file
+  tasks:
+    - name: include the virable file
+      include_vars: vars/allvars.yml
+
+    - name: include the tasks
+      include: tasks/file.yml
+
+    - name: Opon the port to smb
+      firewalld:
+        service: samba
+        state: enabled
+        immediate: true
+
+    - name: Opon the port to ftp
+      firewalld:
+        service: ftp
+        state: enabled
+        immediate: true

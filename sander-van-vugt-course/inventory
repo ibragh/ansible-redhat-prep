@@ -1,0 +1,12 @@
+[cluster]
+node01
+node02
+node03
+[l3-lab1]
+node01
+[l3-lab2]
+node01
+node02
+node03
+[all:vars]
+ansible_python_interpreter=/usr/bin/python

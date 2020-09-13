@@ -1,0 +1,11 @@
+[all]
+node01
+node02
+[lamp]
+node02
+[file]
+node01
+[all:vars]
+ansible_python_interpreter=/usr/bin/python
+ansible_ssh_user=vagrant
+ansible_ssh_pass=vagrant
